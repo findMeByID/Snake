@@ -16,6 +16,9 @@ public class GameLogic extends JPanel implements ActionListener, KeyListener {
     List<Entity> snake;
     Entity food;
 
+    /**
+     * Directional variables
+     */
     int goX;
     int goY;
 
@@ -37,18 +40,59 @@ public class GameLogic extends JPanel implements ActionListener, KeyListener {
         setFocusable(true);
     }
 
+    /**
+     * Method responsible for moving Snake Entity.
+     *  1 - Stores X Y coordinates of all sections in Snake Entity
+     *  2 - Get current location of SnakeHead and calculate new X Y coordinates
+     *  3 - Set new Head coordinates
+     *  4 - Starting at 1st Section after Head, update X Y coordinates of all Sections to the coordinate
+     * of Section in front of it using previously stored X Y coordinates (1)
+     */
     private void moveSnake () {
-        Entity snakeHead = snake.get(0);
+        //Store all current positions of the snake sections
+        int[] prevX = new int[snake.size()];
+        int[] prevY = new int[snake.size()];
+        for (int i = 0; i < snake.size(); i++) {
+            Entity section = snake.get(i);
+            prevX[i] = section.xPos;
+            prevY[i] = section.yPos;
+        }
+
+        //Move SnakeHead Entity to new position
+        Entity snakeHead = snake.getFirst();
         int newXHead = snakeHead.xPos + goX * gameBoard.tileSize;
         int newYHead = snakeHead.yPos + goY * gameBoard.tileSize;
+        snakeHead.xPos = newXHead;
+        snakeHead.yPos = newYHead;
 
-        Entity newSnakeHead = new Entity("snakeHead", newXHead, newYHead);
-        snake.remove(0);
-        snake.add(0,newSnakeHead);
-
-        gameBoard.repaint();
-        System.out.println("Repaint called");
+        // Update the positions of the trailing sections
+        for (int section = 1; section < snake.size(); section++) {
+            Entity trailingSection = snake.get(section);
+            trailingSection.xPos = prevX[section - 1];
+            trailingSection.yPos = prevY[section - 1];
+        }
     }
+
+    /**
+     * Method that checks if food is present in tile that Snakehead is moving into. Called by moveSnake.
+     * If food is present, food tile is updated to new Location and true is returned.
+     */
+    private void isFoodPresent () {
+        Entity snakeHead = snake.getFirst();
+
+        if (snakeHead.xPos == food.xPos && snakeHead.yPos == food.yPos) {
+            int[] newFoodLocation = Util.randomGridLocation(gameBoard.boardWidth, gameBoard.boardHeight, gameBoard.tileSize);
+            food.xPos = newFoodLocation[0];
+            food.yPos = newFoodLocation[1];
+
+            Entity snakeTail = snake.getLast();
+            Entity bodySection = new Entity ("bodySection", snakeTail.xPos, snakeTail.yPos);
+            System.out.println(snakeTail.xPos + " " + snakeTail.yPos);
+            snake.add(bodySection);
+
+        }
+    }
+
 
     /**
      * Invoked when an action occurs.
@@ -58,6 +102,8 @@ public class GameLogic extends JPanel implements ActionListener, KeyListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         moveSnake();
+        isFoodPresent();
+        gameBoard.repaint();
     }
 
     /**
