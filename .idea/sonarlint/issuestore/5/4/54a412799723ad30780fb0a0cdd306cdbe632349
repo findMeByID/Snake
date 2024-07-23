@@ -1,0 +1,25 @@
+
+q
+java:S2387"."width" is the name of a field in "Component".(ïÙÀÁ8óÜı2J$d1d8d879-2e31-446c-a120-99d022a6dfaf
+r
+java:S2387"/"height" is the name of a field in "Component".(¿îäÎ8óÜı2J$90867c66-0551-42c9-8a85-0e11b39c5b1c
+Å
+java:S1186½"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(÷—8óÜı2J$5a2e09bc-dc13-4f00-b23a-f1983c132bec
+Ê
+java:S1186É"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(˜Â½€øÿÿÿÿ8óÜı2J$aa866f1b-a32f-4da8-bae8-44a3b540eb73
+n
+java:S1948"+Make "snakeHead" transient or serializable.(åşÖÂ8õÜı2J$2168c7d9-1bd0-41e3-bdc5-f8251cd0ef7c
+n
+java:S1948"&Make "food" transient or serializable.(‹¼Êıÿÿÿÿ8õÜı2J$418a93da-f49b-4a92-8e59-81af6099b2cf
+n
+java:S1948"+Make "snakeBody" transient or serializable.(ÚºÂÜ8õÜı2J$80e27016-27e9-4662-bd2e-3d556908e3ef
+}
+java:S11619":Add the "@Override" annotation above this method signature(³ıŸê8øÜı2J$f7ade03c-9263-422b-bdd6-399edac0c83f
+j
+java:S1905P"'Remove this unnecessary cast to "Tile".(†Úã¦8øÜı2J$0d08e2d8-2000-4c52-aa8d-c54d9c8877ac
+q
+java:S2140]")Use "java.util.Random.nextInt()" instead.(º¬Œ”şÿÿÿÿ8øÜı2J$5a60797f-77b3-490b-9467-11cdac41c144
+q
+java:S2140^")Use "java.util.Random.nextInt()" instead.(€Êû‰ûÿÿÿÿ8øÜı2J$80285ed9-02ea-489f-9cb3-ebf5f0fd4e26
+r	java:S106s"+Replace this use of System.out by a logger.(é†Û¦ÿÿÿÿÿ8øÜı2J$dee86a17-9b6d-419b-b0e4-21eb3c8c83f5
+e	java:S131""Add a default case to this switch.(¦âõ´8øÜı2J$745d9e16-332e-45eb-8d08-01dbde81c463
