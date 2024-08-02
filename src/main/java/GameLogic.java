@@ -15,6 +15,7 @@ public class GameLogic extends JPanel implements ActionListener, KeyListener {
     GameBoard gameBoard;
     List<Entity> snake;
     Entity food;
+    Boolean colision = false;
 
     /**
      * Directional variables
@@ -40,6 +41,29 @@ public class GameLogic extends JPanel implements ActionListener, KeyListener {
         setFocusable(true);
     }
 
+    private boolean checkColisions () {
+        //Grab snakeHead Entity location
+        Entity snakeHead = snake.getFirst();
+        int newXHead = snakeHead.xPos + goX * gameBoard.tileSize;
+        int newYHead = snakeHead.yPos + goY * gameBoard.tileSize;
+
+        //Check if SnakeHead is within gameboard
+        if (newXHead >= gameBoard.boardWidth || newXHead < 0 || newYHead >= gameBoard.boardHeight || newYHead < 0) {
+            System.out.println("Hit Board");
+            return true;
+        }
+
+        //Check if SnakeHead isn't hitting any of its own body
+        for (int bodySection = 1; bodySection < snake.size(); bodySection ++) {
+            if (newXHead == snake.get(bodySection).xPos && newYHead == snake.get(bodySection).yPos) {
+                System.out.println("Hit Body");
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     /**
      * Method responsible for moving Snake Entity.
      *  1 - Stores X Y coordinates of all sections in Snake Entity
@@ -49,6 +73,10 @@ public class GameLogic extends JPanel implements ActionListener, KeyListener {
      * of Section in front of it using previously stored X Y coordinates (1)
      */
     private void moveSnake () {
+        Entity snakeHead = snake.getFirst();
+        int newXHead = snakeHead.xPos + goX * gameBoard.tileSize;
+        int newYHead = snakeHead.yPos + goY * gameBoard.tileSize;
+
         //Store all current positions of the snake sections
         int[] prevX = new int[snake.size()];
         int[] prevY = new int[snake.size()];
@@ -59,9 +87,6 @@ public class GameLogic extends JPanel implements ActionListener, KeyListener {
         }
 
         //Move SnakeHead Entity to new position
-        Entity snakeHead = snake.getFirst();
-        int newXHead = snakeHead.xPos + goX * gameBoard.tileSize;
-        int newYHead = snakeHead.yPos + goY * gameBoard.tileSize;
         snakeHead.xPos = newXHead;
         snakeHead.yPos = newYHead;
 
@@ -71,6 +96,7 @@ public class GameLogic extends JPanel implements ActionListener, KeyListener {
             trailingSection.xPos = prevX[section - 1];
             trailingSection.yPos = prevY[section - 1];
         }
+
     }
 
     /**
@@ -87,9 +113,8 @@ public class GameLogic extends JPanel implements ActionListener, KeyListener {
 
             Entity snakeTail = snake.getLast();
             Entity bodySection = new Entity ("bodySection", snakeTail.xPos, snakeTail.yPos);
-            System.out.println(snakeTail.xPos + " " + snakeTail.yPos);
             snake.add(bodySection);
-
+            gameBoard.score ++;
         }
     }
 
@@ -101,9 +126,16 @@ public class GameLogic extends JPanel implements ActionListener, KeyListener {
      */
     @Override
     public void actionPerformed(ActionEvent e) {
-        moveSnake();
-        isFoodPresent();
-        gameBoard.repaint();
+        if (checkColisions()) {
+            goX = 0;
+            goY = 0;
+            loopTime.stop();
+            System.out.println("Game over womp womp!");
+        } else {
+            moveSnake();
+            isFoodPresent();
+            gameBoard.repaint();
+        }
     }
 
     /**
@@ -115,23 +147,31 @@ public class GameLogic extends JPanel implements ActionListener, KeyListener {
      */
     @Override
     public void keyPressed(KeyEvent e) {
-        int pressedKeyCode =  e.getKeyCode();
+        int pressedKeyCode = e.getKeyCode();
         switch (pressedKeyCode) {
-            case KeyEvent.VK_UP :
-                goX = 0;
-                goY = -1;
+            case KeyEvent.VK_UP:
+                if (goY != 1) {
+                    goX = 0;
+                    goY = -1;
+                }
                 break;
-            case KeyEvent.VK_DOWN :
-                goX = 0;
-                goY = 1;
+            case KeyEvent.VK_DOWN:
+                if (goY != -1) {
+                    goX = 0;
+                    goY = 1;
+                }
                 break;
-            case KeyEvent.VK_LEFT :
-                goX = -1;
-                goY = 0;
+            case KeyEvent.VK_LEFT:
+                if (goX != 1) {
+                    goX = -1;
+                    goY = 0;
+                }
                 break;
-            case KeyEvent.VK_RIGHT :
-                goX = 1;
-                goY = 0;
+            case KeyEvent.VK_RIGHT:
+                if (goX != -1) {
+                    goX = 1;
+                    goY = 0;
+                }
                 break;
         }
     }

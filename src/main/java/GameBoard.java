@@ -30,6 +30,13 @@ public class GameBoard extends JPanel {
      */
     Entity food;
 
+    /**
+     * Value of score
+     */
+    int score;
+
+    boolean gameOver = false;
+
     public GameBoard (int width, int height, int tileSize) {
         this.boardWidth = width;
         this.boardHeight = height;
@@ -76,6 +83,10 @@ public class GameBoard extends JPanel {
         g.setColor(Color.RED);
         g.fillRect(food.xPos, food.yPos, tileSize, tileSize);
 
+        //Draw the score
+        g.setColor(Color.ORANGE);
+        g.setFont(new Font("Arial", Font.BOLD, 12));
+        g.drawString("Score: " + score, 10, 10);
     }
 
     /**
